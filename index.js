@@ -44,7 +44,7 @@ try {
 
 // Формуємо строки у форматі "валюта:дата:курс"
 const formattedRates = parsedData.map(entry => {
-    return `${entry.currency}:${entry.date}:${entry.rate}`;
+    return `${entry.cc}:${entry.exchangedate}:${entry.rate}`;
   }).join('\n');
   
  
