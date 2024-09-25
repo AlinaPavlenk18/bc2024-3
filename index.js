@@ -24,7 +24,6 @@ if (!options.input) {
     process.exit(1);
   }
 
-  // Читаємо JSON з файлу
 const inputFilePath = path.resolve(options.input);
 let data;
 try {
@@ -34,7 +33,6 @@ try {
   process.exit(1);
 }
 
-// Парсимо дані з JSON
 let parsedData;
 try {
   parsedData = JSON.parse(data);
@@ -43,6 +41,25 @@ try {
   process.exit(1);
 }
 
-if (options.display){
-    console.log('Data: ', parsedData);
-}
+
+// Формуємо строки у форматі "валюта:дата:курс"
+const formattedRates = parsedData.map(entry => {
+    return `${entry.currency}:${entry.date}:${entry.rate}`;
+  }).join('\n');
+  
+ 
+  if (options.display) {
+    console.log('Exchange rate:\n', formattedRates);
+  }
+  
+  // Якщо параметр --output передано, записуємо дані у файл
+  if (options.output) {
+    const outputFilePath = path.resolve(options.output);
+    try {
+      fs.writeFileSync(outputFilePath, formattedRates, 'utf-8');
+      console.log(`Data successfully written to ${outputFilePath}`);
+    } catch (err) {
+      console.error('Error writing to the file:', err);
+      process.exit(1);
+    }
+  }
